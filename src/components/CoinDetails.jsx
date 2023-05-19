@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { server } from '../index';
 import ErrorComponent from './ErrorComponent';
+import Chart from './Chart';
 
 const CoinDetails = () => {
 
@@ -28,6 +29,8 @@ const CoinDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [currency, setCurrency] = useState("inr");
+    const [days , setDays] = useState("24h");
+    const [chartArray , setChartArray] = useState([]);
     const currencySymbol = currency === "inr" ? "₹" : currency=== "eur" ? "€" : "$";
 
     const params = useParams();
@@ -38,13 +41,18 @@ const CoinDetails = () => {
               const {data} = await axios.get(
                   `${server}/coins/${params.id}`
                   )
+              const { data: chartData } = await axios.get(
+                  `${server}/coins/${params.id}/market_chart?vs_currency=${currency}&days=${days}`
+                  )    
               console.log(data);
+              console.log(chartData)
               setCoin(data);
+              setChartArray(chartData.prices);
               setLoading(false);
-          } catch(error){
+              } catch(error){
               setError(true);
               setLoading(false);
-          }
+              }
       };
       fetchCoin();
   }, [params.id]);
@@ -59,7 +67,7 @@ const CoinDetails = () => {
             loading? <Loader /> : (
                 <>
                 <Box width={"full"} borderWidth={1}>
-                  chart
+                <Chart arr={chartArray} currency={currencySymbol} days={days}  />
                 </Box>
 
                 <RadioGroup value={currency} onChange={setCurrency} p={"8"}>
