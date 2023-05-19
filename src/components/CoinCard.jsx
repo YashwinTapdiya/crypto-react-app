@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-    Container,
     Heading,
-    HStack,
     Image,
     Text, 
     VStack,

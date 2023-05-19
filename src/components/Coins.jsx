@@ -3,11 +3,7 @@ import axios from 'axios';
 import { server } from '../index';
 import {
     Container,
-    Heading,
     HStack,
-    Image,
-    Text, 
-    VStack,
     Button,
     Radio,
     RadioGroup
