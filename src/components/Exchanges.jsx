@@ -10,26 +10,34 @@ import {
     VStack,
   } from "@chakra-ui/react";
 import Loader from './Loader';
+import ErrorComponent from './ErrorComponent';
 
 const Exchanges = () => {
 
     const [exchanges , setExchanges] = useState([]);
     const [loading , setLoading] =useState(true);
+    const [error , setError] = useState(false);
 
 //useEffect(effect: React.EffectCallback, deps?: React.DependencyList | undefined): void
 //If present, effect will only activate if the values in the list change.
 //Accepts a function that contains imperative, possibly effectful code.
     useEffect(() =>{
         const fetchExchanges = async() =>{
-            const {data} = await axios.get(`${server}/exchanges`)
-
-            console.log(data);
-            setExchanges(data);
-            setLoading(false);
+            try{
+                const {data} = await axios.get(`${server}/exchanges`)
+                console.log(data);
+                setExchanges(data);
+                setLoading(false);
+            } catch(error){
+                setError(true);
+                setLoading(false);
+            }
         };
         fetchExchanges();
     }, []);
-
+    if(error){
+        return <ErrorComponent message={"Error while fetching Exchanges"} />
+    }
 
   return (
     <Container maxW={"container.xl"} >
