@@ -11,40 +11,38 @@ import {
   Legend,
 } from "chart.js";
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
 );
 
+const Chart = ({ arr = [], currency, days }) => {
+  const prices = [];
+  const date = [];
 
-const Chart = ({arr=[] , currency ,days}) => {
-
-const prices = [];
-const date = [];
-
-for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
     if (days === "24h") date.push(new Date(arr[i][0]).toLocaleTimeString());
     else date.push(new Date(arr[i][0]).toLocaleDateString());
     prices.push(arr[i][1]);
-}
+  }
 
-const data = {
+  const data = {
     labels: date,
     datasets: [
-        {
-            label: `Price in ${currency}`,
-            data: prices,
-            borderColor: "rgb(255,99,132)",
-            backgroundColor: "rgba(255,99,132,0.5)",
-        },
+      {
+        label: `Price in ${currency}`,
+        data: prices,
+        borderColor: "rgb(255,99,132)",
+        backgroundColor: "rgba(255,99,132,0.5)",
+      },
     ],
-};
+  };
 
-   return (
+  return (
     <Line
       options={{
         responsive: true,
@@ -52,6 +50,6 @@ const data = {
       data={data}
     />
   );
-}
+};
 
-export default Chart
+export default Chart;
